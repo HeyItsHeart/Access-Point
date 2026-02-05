@@ -3,6 +3,8 @@ import session from "express-session";
 import bcrypt from "bcrypt";
 import { db } from "./app/db.js";
 
+console.log("SERVER FILE LOADED");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
