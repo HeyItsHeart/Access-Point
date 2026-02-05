@@ -96,6 +96,59 @@ app.listen(PORT, () => {
 
 /* =========================
    LOGIN
+========================= */
+app.post("/api/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password)
+    return res.status(400).send("Missing");
+
+  db.get(
+    "SELECT * FROM users WHERE username = ?",
+    [username],
+    async (err, user) => {
+      if (err || !user) return res.status(401).send("Invalid");
+
+      if (user.banned) return res.status(403).send("Banned");
+
+      const ok = await bcrypt.compare(password, user.password);
+      if (!ok) return res.status(401).send("Invalid");
+
+      req.session.userId = user.id;
+      req.session.role = user.role;
+
+      res.send("OK");
+    } // closes db.get callback
+  ); // closes db.get
+}); // closes app.post
+
+/* =========================
+   WHO AM I
+========================= */
+app.get("/api/me", (req, res) => {
+  if (!req.session.userId) return res.json(null);
+
+  res.json({
+    id: req.session.userId,
+    role: req.session.role
+  });
+});
+
+/* =========================
+   SERVER
+========================= */
+app.listen(PORT, () => {
+  console.log(`Access Point Server running on port ${PORT}`);
+});
+      }
+    );
+  } catch {
+    res.status(500).send("Server error");
+  }
+});
+
+/* =========================
+   LOGIN
    ========================= */
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
