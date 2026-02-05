@@ -1,7 +1,7 @@
 import express from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
-import { db } from "./db.js";
+import { db } from "./app/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
