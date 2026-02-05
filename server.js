@@ -1,6 +1,6 @@
 import express from "express";
 import session from "express-session";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "./app/db.js";
 
 const app = express();
