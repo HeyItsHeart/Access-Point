@@ -65,9 +65,9 @@ app.post("/api/login", (req, res) => {
       req.session.role = user.role;
 
       res.send("OK");
-    }
-  );
-});
+    } // <-- closes the db.get callback
+  );   // <-- closes db.get
+});     // <-- closes app.post
 
 /* =========================
    WHO AM I
